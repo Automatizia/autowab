@@ -47,12 +47,12 @@ func New(dbPath, webhookURL string, log *zap.Logger) (*Client, error) {
 }
 
 func (c *Client) Connect(ctx context.Context) error {
-	container, err := sqlstore.New("sqlite3", "file:"+c.dbPath+"?_foreign_keys=on", waLog.Noop)
+	container, err := sqlstore.New(ctx, "sqlite3", "file:"+c.dbPath+"?_foreign_keys=on", waLog.Noop)
 	if err != nil {
 		return err
 	}
 
-	deviceStore, err := container.GetFirstDevice()
+	deviceStore, err := container.GetFirstDevice(ctx)
 	if err != nil {
 		return err
 	}
